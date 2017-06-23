@@ -1,0 +1,12 @@
+#! /bin/bash
+
+for dir in $(ls -d */); do
+    if [ "$dir" == "./" ]; then
+	continue
+    fi
+    srcfileloc="$(pwd)/$dir$(head -n 1 "$dir/sourceloc")"
+    echo "Source: $srcfileloc"
+    destfileloc=$(head -n 1 "$dir/destloc")
+    echo "Dest: $destfileloc"
+    eval cp -l --remove-destination "$srcfileloc" "$destfileloc"
+done

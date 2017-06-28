@@ -2,7 +2,7 @@ set shell=/bin/bash
 syntax on
 set number
 set mouse=a
-set spell
+set nospell
 set grepprg=grep\ -nH\ $*
 let g:tex_flavor="latex"
 set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab

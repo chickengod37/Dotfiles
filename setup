@@ -4,7 +4,7 @@ for dir in $(ls -d */); do
     if [ "$dir" == "./" ]; then
 	continue
     fi
-    srcfileloc="$(pwd)/$dir$(head -n 1 "$dir/sourceloc")"
+    srcfileloc="$(pwd)/$dir/config"
     echo "Source: $srcfileloc"
     destfileloc=$(head -n 1 "$dir/destloc")
     echo "Dest: $destfileloc"

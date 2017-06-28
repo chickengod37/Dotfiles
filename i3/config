@@ -105,7 +105,7 @@ bindsym $mod+Shift+r restart
 
 # Options for logging out, shutting down, etc.
 # Requires the package "i3lock-blur" from the AUR
-set $mode_power System: (l) Lock, (e) Logout, (p) Poweroff, (r) Reboot
+set $mode_power  System: (l) Lock, (e) Logout, (p) Poweroff, (r) Reboot 
 mode "$mode_power" {
     bindsym l exec "i3lock -f -r 50 -s 4", mode "default"
     bindsym e exec "i3-msg exit", mode "default"

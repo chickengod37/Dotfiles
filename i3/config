@@ -34,7 +34,6 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 
-
 # move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
@@ -47,7 +46,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+p split h
+bindsym $mod+semicolon split h
 
 # split in vertical orientation
 bindsym $mod+n split v
@@ -66,7 +65,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # switch to workspace
-bindsym $mod+1 workspace 1 
+bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
 bindsym $mod+4 workspace 4
@@ -96,12 +95,13 @@ bindsym $mod+Shift+r restart
 
 # Options for logging out, shutting down, etc.
 # Requires the package "i3lock-blur" from the AUR
-set $mode_power  System: (l) Lock, (e) Logout, (p) Poweroff, (r) Reboot 
+set $mode_power  System: (l) Lock, (e) Logout, (s) Shutdown, (r) Reboot (h) Hibernate
 mode "$mode_power" {
-    bindsym l exec "i3lock -f -r 50 -s 4", mode "default"
+    bindsym l exec "i3lock-fancy -- scrot -z -q 100", mode "default"
     bindsym e exec "i3-msg exit", mode "default"
-    bindsym p exec "poweroff", mode "default"
+    bindsym s exec "poweroff", mode "default"
     bindsym r exec "reboot", mode "default"
+    bindsym h exec "systemctl hibernate", mode "default"
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -135,32 +135,49 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 
-#Pretty dmenu with blurrrrrr
-set $x-offset 390 
-set $y-offset 350
-set $bar-width 1150 
-bindsym $mod+d exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -class \"Dmenu\" -h 50 -y $y-offset -x $x-offset -w $bar-width -dim .75 -i -fn \"Helvetica Nueue\"" 
+##################
+# Color Settings #
+##################
+
+set $color-focused-border       #909090
+set $color-focused-background   #909090
+set $color-focused-text         #000000
+set $color-focused-indicator    #D0D020
+set $color-focused-child_border #909090
+
+set $color-unfocused-border       #404060
+set $color-unfocused-background   #000000
+set $color-unfocused-text         #FFFFFF
+set $color-unfocused-indicator    #404060
+set $color-unfocused-child_border #404060
+
 
 ###################
 # Window Settings #
 ###################
 for_window [class="^.*"] border pixel 4 
+for_window [class="albert"] border pixel 0
 
-#Colors
-#<colorclass>           <border> <background> <text>  <indicator> <child_border>
-client.focused          #909090  #000000      #ffffff #909020     #909090
-client.unfocused        #404060  #000000      #ffffff #404060     #404060
+
+# Set window colors
+#<colorclass>           <border>                <background>                <text>                  <indicator>                 <child_border>
+client.focused          $color-focused-border   $color-focused-background   $color-focused-text     $color-focused-indicator    $color-focused-child_border
+client.unfocused        $color-unfocused-border $color-unfocused-background $color-unfocused-text   $color-unfocused-indicator  $color-unfocused-child_border 
+
 
 gaps inner 15 
 smart_gaps on
-smart_borders on
+#smart_borders on
+
 
 # ################ #
 # Startup commands #
 # ################ #
-exec_always --no-startup-id compton -b  
+exec_always --no-startup-id sh $HOME/.exec-compton  
 exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id sh $HOME/.fehbg 
+exec_always --no-startup-id albert
+exec_always --no-startup-id xss-lock -- i3lock-fancy -- scrot -z -q 100
 
 # ################## #
 # Custom Keybindings #
@@ -168,3 +185,8 @@ exec_always --no-startup-id sh $HOME/.fehbg
 bindsym $mod+f exec firefox
 bindsym $mod+Return exec "gnome-terminal"
 bindsym $mod+q kill
+bindsym $mod+F5 exec "brightnessctl s 10%-" 
+bindsym $mod+F6 exec "brightnessctl s +10%"
+bindsym $mod+F10 exec "amixer set Master toggle"
+bindsym $mod+F11 exec "amixer set Master 5%-"
+bindsym $mod+F12 exec "amixer set Master 5%+"
